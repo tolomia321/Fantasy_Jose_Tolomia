@@ -287,7 +287,7 @@ public class SeleccionNBA_v14 {
     }
     static void cargarDatos() {
         try {
-            FileInputStream fileIn = new FileInputStream("datosNBA.ser");
+            FileInputStream fileIn = new FileInputStream("datosNBA.txt");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             salarios = (ArrayList<Double>) in.readObject();
             nombres = (ArrayList<String>) in.readObject();
@@ -310,7 +310,7 @@ public class SeleccionNBA_v14 {
     }
     static void guardarDatos() {
         try {
-            FileOutputStream fileOut = new FileOutputStream("datosNBA.ser");
+            FileOutputStream fileOut = new FileOutputStream("datosNBA.txt");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(salarios);
             out.writeObject(nombres);
