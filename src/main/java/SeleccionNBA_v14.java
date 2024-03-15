@@ -300,7 +300,6 @@ public class SeleccionNBA_v14 {
             in.close();
             fileIn.close();
         } catch (IOException | ClassNotFoundException i) {
-            // Si hay un error al cargar los datos, se crean nuevas listas vacías
             salarios = new ArrayList<>();
             nombres = new ArrayList<>();
             posiciones = new ArrayList<>();
