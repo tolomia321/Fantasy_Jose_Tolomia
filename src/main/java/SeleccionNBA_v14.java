@@ -20,12 +20,9 @@ public class SeleccionNBA_v14 {
         String leido = null;
         int nleido;
 
-        salarios = new ArrayList<>();
-        nombres = new ArrayList<>();
-        posiciones = new ArrayList<>();
-        salariosFichados = new ArrayList<>();
-        nombresFichados = new ArrayList<>();
-        posicionesFichadas = new ArrayList<>();
+        if (salarios.isEmpty()) {
+            rellenaDatos();
+        }
 
         rellenaDatos();
         while (flag) {
@@ -69,6 +66,9 @@ public class SeleccionNBA_v14 {
     }
 
     static void rellenaDatos() {
+        salarios.clear();
+        nombres.clear();
+        posiciones.clear();
         add("Kyrie Irving", "Base", 33);
         add("Chris Paul", "Base", 28);
         add("Russell Westbrook", "Base", 34);
@@ -97,45 +97,40 @@ public class SeleccionNBA_v14 {
     }
 
     static void imprimirFichables() {
-        System.err.println();
         System.out.println("JUGADORES FICHABLES:");
         for (int i = 0; i < salarios.size(); i++) {
             if (salarios.get(i) <= credito) {
-                System.out.println((i + 1) + ". " + posiciones.get(i) + " "
-                        + nombres.get(i) + " " + salarios.get(i));
+                System.out.println((i + 1) + ". " + posiciones.get(i) + " " + nombres.get(i) + " " + salarios.get(i));
             }
         }
         double total = calcularTotal();
         System.out.println("Salario total: $" + total);
         System.out.println("Crédito restante: $" + credito);
-        System.out.println("");
-
+        System.out.println();
     }
 
     static void imprimirFichados() {
-        System.out.println("");
         System.out.println("JUGADORES FICHADOS:");
         for (int i = 0; i < salariosFichados.size(); i++) {
-            System.out.println((i + 1) + ". " + posicionesFichadas.get(i) + " "
-                    + nombresFichados.get(i) + " " + salariosFichados.get(i));
+            System.out.println((i + 1) + ". " + posicionesFichadas.get(i) + " " + nombresFichados.get(i) + " " + salariosFichados.get(i));
         }
-        System.out.println("");
+        System.out.println();
     }
 
     static double calcularTotal() {
-        double t = 0;
-        for (double d : salarios) {
-            t += d;
+        double total = 0;
+        for (double salario : salarios) {
+            total += salario;
         }
-        return t;
+        return total;
     }
 
     static double calcularTotalFichados() {
-        double t = 0;
-        for (double d : salariosFichados) {
-            t += d;
+        double total = 0;
+        for (double salario : salariosFichados) {
+            total += salario;
         }
-        return t;
+        return total;
     }
 
     
@@ -222,31 +217,26 @@ public class SeleccionNBA_v14 {
     }
 
     static void agregarNuevoJugador(Scanner leer) {
-        // if (nombres.size() + nombresFichados.size() < 25) { // Elimina esta condición
-            System.out.println();
-            System.out.println("Ingrese el nombre del nuevo jugador:");
-            String nuevoNombre = leer.nextLine();
-            System.out.println();
-    
-            System.out.println("Ingrese la posición del nuevo jugador:");
-            String nuevaPosicion = leer.nextLine();
-            System.out.println();
-    
-            System.out.println("Ingrese el salario del nuevo jugador:");
-            double nuevoSalario = leer.nextDouble();
-            leer.nextLine();
-    
-           // if (calcularTotal() + calcularTotalFichados() + nuevoSalario <= credito) {
-                add(nuevoNombre, nuevaPosicion, nuevoSalario);
-                System.out.println("Jugador agregado con éxito.");
-                imprimirFichables();
-           /* } else {
-                System.out.println("El salario del nuevo jugador excede el crédito restante.");*/
-            }
-        // } else {
-        //     System.out.println("Ya has alcanzado el límite máximo de jugadores (25).");
-        // }
-    
+        System.out.println();
+        System.out.println("Ingrese el nombre del nuevo jugador:");
+        String nuevoNombre = leer.nextLine();
+        System.out.println();
+
+        System.out.println("Ingrese la posición del nuevo jugador:");
+        String nuevaPosicion = leer.nextLine();
+        System.out.println();
+
+        System.out.println("Ingrese el salario del nuevo jugador:");
+        double nuevoSalario = leer.nextDouble();
+        leer.nextLine();
+
+        // Llamamos a la función add() para agregar el nuevo jugador y guardar los datos
+        add(nuevoNombre, nuevaPosicion, nuevoSalario);
+
+        System.out.println("Jugador agregado con éxito.");
+        imprimirFichables();
+    }
+
     static void eliminarJugador(int indice) {
         posiciones.remove(indice);
         nombres.remove(indice);
@@ -257,6 +247,7 @@ public class SeleccionNBA_v14 {
         nombres.add(nombre);
         posiciones.add(posicion);
         salarios.add(salario);
+        guardarDatos();
     }
 
     static void mostrarJugadoresPorPosicion(Scanner leer) {
@@ -288,7 +279,7 @@ public class SeleccionNBA_v14 {
     }
     static void cargarDatos() {
         try {
-            FileInputStream fileIn = new FileInputStream("datosNBA.obj");
+            FileInputStream fileIn = new FileInputStream("datosNBAV2.obj");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             salarios = (ArrayList<Double>) in.readObject();
             nombres = (ArrayList<String>) in.readObject();
@@ -311,7 +302,7 @@ public class SeleccionNBA_v14 {
 
     static void guardarDatos() {
         try {
-            FileOutputStream fileOut = new FileOutputStream("datosNBA.obj");
+            FileOutputStream fileOut = new FileOutputStream("datosNBAV2.obj");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(salarios);
             out.writeObject(nombres);
