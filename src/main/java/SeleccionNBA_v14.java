@@ -60,6 +60,7 @@ public class SeleccionNBA_v14 {
                     rectificarFichaje(leer);
                     break;
                 case "S":
+                    guardarDatos();
                     flag = false;
                     break;
             }
@@ -287,7 +288,7 @@ public class SeleccionNBA_v14 {
     }
     static void cargarDatos() {
         try {
-            FileInputStream fileIn = new FileInputStream("datosNBA.txt");
+            FileInputStream fileIn = new FileInputStream("datosNBA.obj");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             salarios = (ArrayList<Double>) in.readObject();
             nombres = (ArrayList<String>) in.readObject();
@@ -308,9 +309,10 @@ public class SeleccionNBA_v14 {
             posicionesFichadas = new ArrayList<>();
         }
     }
+
     static void guardarDatos() {
         try {
-            FileOutputStream fileOut = new FileOutputStream("datosNBA.txt");
+            FileOutputStream fileOut = new FileOutputStream("datosNBA.obj");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(salarios);
             out.writeObject(nombres);
@@ -325,4 +327,5 @@ public class SeleccionNBA_v14 {
             i.printStackTrace();
         }
     }
+
 }
