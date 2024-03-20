@@ -5,19 +5,19 @@ import java.util.Scanner;
 
 public class EquipoNBA implements Serializable {
 
-    private ArrayList<Double> salarios;
+    private ArrayList<Double> precio;
     private ArrayList<String> nombres;
     private ArrayList<String> posiciones;
-    private ArrayList<Double> salariosFichados;
+    private ArrayList<Double> precioFichados;
     private ArrayList<String> nombresFichados;
     private ArrayList<String> posicionesFichadas;
     private double credito;
 
     public EquipoNBA() {
-        this.salarios = new ArrayList<>();
+        this.precio = new ArrayList<>();
         this.nombres = new ArrayList<>();
         this.posiciones = new ArrayList<>();
-        this.salariosFichados = new ArrayList<>();
+        this.precioFichados = new ArrayList<>();
         this.nombresFichados = new ArrayList<>();
         this.posicionesFichadas = new ArrayList<>();
         this.credito = 200;
@@ -35,7 +35,7 @@ public class EquipoNBA implements Serializable {
         String leido = null;
         int nleido;
 
-        if (salarios.isEmpty()) {
+        if (precio.isEmpty()) {
             rellenaDatos();
         }
 
@@ -81,7 +81,7 @@ public class EquipoNBA implements Serializable {
     }
 
     private void rellenaDatos() {
-        salarios.clear();
+        precio.clear();
         nombres.clear();
         posiciones.clear();
         add("Kyrie Irving", "Base", 33);
@@ -113,9 +113,9 @@ public class EquipoNBA implements Serializable {
 
     private void imprimirFichables() {
         System.out.println("JUGADORES FICHABLES:");
-        for (int i = 0; i < salarios.size(); i++) {
-            if (salarios.get(i) <= credito) {
-                System.out.println((i + 1) + ". " + posiciones.get(i) + " " + nombres.get(i) + " " + salarios.get(i));
+        for (int i = 0; i < precio.size(); i++) {
+            if (precio.get(i) <= credito) {
+                System.out.println((i + 1) + ". " + posiciones.get(i) + " " + nombres.get(i) + " " + precio.get(i));
             }
         }
         double total = calcularTotal();
@@ -126,28 +126,28 @@ public class EquipoNBA implements Serializable {
 
     private void imprimirFichados() {
         System.out.println("JUGADORES FICHADOS:");
-        for (int i = 0; i < salariosFichados.size(); i++) {
-            System.out.println((i + 1) + ". " + posicionesFichadas.get(i) + " " + nombresFichados.get(i) + " " + salariosFichados.get(i));
+        for (int i = 0; i < precioFichados.size(); i++) {
+            System.out.println((i + 1) + ". " + posicionesFichadas.get(i) + " " + nombresFichados.get(i) + " " + precioFichados.get(i));
         }
         System.out.println();
     }
 
     private double calcularTotal() {
         double total = 0;
-        for (double salario : salarios) {
+        for (double salario : precio) {
             total += salario;
         }
         return total;
     }
 
     private void fichar(int n) {
-        if (n >= 0 && n < posiciones.size() && salarios.get(n) <= credito) {
+        if (n >= 0 && n < posiciones.size() && precio.get(n) <= credito) {
             String posicionFichada = posiciones.get(n);
             if (puedeFicharJugadorDePosicion(posicionFichada)) {
                 posicionesFichadas.add(posicionFichada);
                 nombresFichados.add(nombres.get(n));
-                double s = salarios.get(n);
-                salariosFichados.add(s);
+                double s = precio.get(n);
+                precioFichados.add(s);
                 credito -= s;
 
                 eliminarJugador(n);
@@ -191,12 +191,12 @@ public class EquipoNBA implements Serializable {
             // Obtener la información del jugador a rectificar
             String nombreRectificar = nombresFichados.get(indiceJugadorRectificar);
             String posicionRectificar = posicionesFichadas.get(indiceJugadorRectificar);
-            double salarioRectificar = salariosFichados.get(indiceJugadorRectificar);
+            double salarioRectificar = precioFichados.get(indiceJugadorRectificar);
 
             // Eliminar el jugador de las listas de jugadores fichados
             nombresFichados.remove(indiceJugadorRectificar);
             posicionesFichadas.remove(indiceJugadorRectificar);
-            salariosFichados.remove(indiceJugadorRectificar);
+            precioFichados.remove(indiceJugadorRectificar);
 
             // Devolver el salario al crédito restante
             credito += salarioRectificar;
@@ -245,13 +245,13 @@ public class EquipoNBA implements Serializable {
     private void eliminarJugador(int indice) {
         posiciones.remove(indice);
         nombres.remove(indice);
-        salarios.remove(indice);
+        precio.remove(indice);
     }
 
     private void add(String nombre, String posicion, double salario) {
         nombres.add(nombre);
         posiciones.add(posicion);
-        salarios.add(salario);
+        precio.add(salario);
         guardarDatos();
     }
 
@@ -264,9 +264,9 @@ public class EquipoNBA implements Serializable {
         System.out.println("JUGADORES DISPONIBLES EN POSICIÓN " + posicionSeleccionada + ":");
         boolean jugadoresEncontrados = false;
         for (int i = 0; i < posiciones.size(); i++) {
-            if (posiciones.get(i).equalsIgnoreCase(posicionSeleccionada) && salarios.get(i) <= credito) {
+            if (posiciones.get(i).equalsIgnoreCase(posicionSeleccionada) && precio.get(i) <= credito) {
                 jugadoresEncontrados = true;
-                System.out.println((i + 1) + ". " + posiciones.get(i) + " " + nombres.get(i) + " " + salarios.get(i));
+                System.out.println((i + 1) + ". " + posiciones.get(i) + " " + nombres.get(i) + " " + precio.get(i));
             }
         }
 
@@ -280,20 +280,20 @@ public class EquipoNBA implements Serializable {
         try {
             FileInputStream fileIn = new FileInputStream("datosNBAV3.obj");
             ObjectInputStream in = new ObjectInputStream(fileIn);
-            salarios = (ArrayList<Double>) in.readObject();
+            precio = (ArrayList<Double>) in.readObject();
             nombres = (ArrayList<String>) in.readObject();
             posiciones = (ArrayList<String>) in.readObject();
-            salariosFichados = (ArrayList<Double>) in.readObject();
+            precioFichados = (ArrayList<Double>) in.readObject();
             nombresFichados = (ArrayList<String>) in.readObject();
             posicionesFichadas = (ArrayList<String>) in.readObject();
             credito = in.readDouble();
             in.close();
             fileIn.close();
         } catch (IOException | ClassNotFoundException i) {
-            salarios = new ArrayList<>();
+            precio = new ArrayList<>();
             nombres = new ArrayList<>();
             posiciones = new ArrayList<>();
-            salariosFichados = new ArrayList<>();
+            precioFichados = new ArrayList<>();
             nombresFichados = new ArrayList<>();
             posicionesFichadas = new ArrayList<>();
         }
@@ -303,10 +303,10 @@ public class EquipoNBA implements Serializable {
         try {
             FileOutputStream fileOut = new FileOutputStream("datosNBAV3.obj");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(salarios);
+            out.writeObject(precio);
             out.writeObject(nombres);
             out.writeObject(posiciones);
-            out.writeObject(salariosFichados);
+            out.writeObject(precioFichados);
             out.writeObject(nombresFichados);
             out.writeObject(posicionesFichadas);
             out.writeDouble(credito);
