@@ -1,20 +1,35 @@
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class SeleccionNBA_v14 {
+public class EquipoNBA implements Serializable {
 
-    static ArrayList<Double> salarios;
-    static ArrayList<String> nombres;
-    static ArrayList<String> posiciones;
-    static ArrayList<Double> salariosFichados;
-    static ArrayList<String> nombresFichados;
-    static ArrayList<String> posicionesFichadas;
+    private ArrayList<Double> salarios;
+    private ArrayList<String> nombres;
+    private ArrayList<String> posiciones;
+    private ArrayList<Double> salariosFichados;
+    private ArrayList<String> nombresFichados;
+    private ArrayList<String> posicionesFichadas;
+    private double credito;
 
-    static double credito = 200;
+    public EquipoNBA() {
+        this.salarios = new ArrayList<>();
+        this.nombres = new ArrayList<>();
+        this.posiciones = new ArrayList<>();
+        this.salariosFichados = new ArrayList<>();
+        this.nombresFichados = new ArrayList<>();
+        this.posicionesFichadas = new ArrayList<>();
+        this.credito = 200;
+        cargarDatos();
+    }
 
     public static void main(String[] args) {
-        cargarDatos();
+        EquipoNBA equipoNBA = new EquipoNBA();
+        equipoNBA.ejecutar();
+    }
+
+    private void ejecutar() {
         boolean flag = true;
         Scanner leer = new Scanner(System.in);
         String leido = null;
@@ -65,7 +80,7 @@ public class SeleccionNBA_v14 {
         guardarDatos();
     }
 
-    static void rellenaDatos() {
+    private void rellenaDatos() {
         salarios.clear();
         nombres.clear();
         posiciones.clear();
@@ -96,7 +111,7 @@ public class SeleccionNBA_v14 {
 
     }
 
-    static void imprimirFichables() {
+    private void imprimirFichables() {
         System.out.println("JUGADORES FICHABLES:");
         for (int i = 0; i < salarios.size(); i++) {
             if (salarios.get(i) <= credito) {
@@ -109,7 +124,7 @@ public class SeleccionNBA_v14 {
         System.out.println();
     }
 
-    static void imprimirFichados() {
+    private void imprimirFichados() {
         System.out.println("JUGADORES FICHADOS:");
         for (int i = 0; i < salariosFichados.size(); i++) {
             System.out.println((i + 1) + ". " + posicionesFichadas.get(i) + " " + nombresFichados.get(i) + " " + salariosFichados.get(i));
@@ -117,7 +132,7 @@ public class SeleccionNBA_v14 {
         System.out.println();
     }
 
-    static double calcularTotal() {
+    private double calcularTotal() {
         double total = 0;
         for (double salario : salarios) {
             total += salario;
@@ -125,16 +140,7 @@ public class SeleccionNBA_v14 {
         return total;
     }
 
-    static double calcularTotalFichados() {
-        double total = 0;
-        for (double salario : salariosFichados) {
-            total += salario;
-        }
-        return total;
-    }
-
-    
-    static void fichar(int n) {
+    private void fichar(int n) {
         if (n >= 0 && n < posiciones.size() && salarios.get(n) <= credito) {
             String posicionFichada = posiciones.get(n);
             if (puedeFicharJugadorDePosicion(posicionFichada)) {
@@ -160,53 +166,53 @@ public class SeleccionNBA_v14 {
     }
 
 
-    static boolean puedeFicharJugadorDePosicion(String posicion) {
+    private boolean puedeFicharJugadorDePosicion(String posicion) {
         // Verificar si ya se ha fichado al menos un jugador de cada posición
         boolean haFichadoCadaPosicion = posicionesFichadas.contains("Base") &&
-                                        posicionesFichadas.contains("Escolta") &&
-                                        posicionesFichadas.contains("Alero") &&
-                                        posicionesFichadas.contains("Ala Pivot") &&
-                                        posicionesFichadas.contains("Pivot");
+                posicionesFichadas.contains("Escolta") &&
+                posicionesFichadas.contains("Alero") &&
+                posicionesFichadas.contains("Ala Pivot") &&
+                posicionesFichadas.contains("Pivot");
 
         // Permitir fichar otro jugador de la misma posición solo si ya has fichado uno de cada posición
         return haFichadoCadaPosicion || !posicionesFichadas.contains(posicion);
     }
-    
 
-    static void rectificarFichaje(Scanner leer) {
+
+    private void rectificarFichaje(Scanner leer) {
         imprimirFichados();
         System.out.println("Introduce el número del jugador a rectificar: ");
         int numeroJugadorRectificar = leer.nextInt();
         leer.nextLine();
-    
+
         if (numeroJugadorRectificar > 0 && numeroJugadorRectificar <= nombresFichados.size()) {
             int indiceJugadorRectificar = numeroJugadorRectificar - 1;
-    
+
             // Obtener la información del jugador a rectificar
             String nombreRectificar = nombresFichados.get(indiceJugadorRectificar);
             String posicionRectificar = posicionesFichadas.get(indiceJugadorRectificar);
             double salarioRectificar = salariosFichados.get(indiceJugadorRectificar);
-    
+
             // Eliminar el jugador de las listas de jugadores fichados
             nombresFichados.remove(indiceJugadorRectificar);
             posicionesFichadas.remove(indiceJugadorRectificar);
             salariosFichados.remove(indiceJugadorRectificar);
-    
+
             // Devolver el salario al crédito restante
             credito += salarioRectificar;
-    
+
             // Agregar el jugador de nuevo a las listas de jugadores fichables
             add(nombreRectificar, posicionRectificar, salarioRectificar);
-    
+
             System.out.println("Fichaje rectificado con éxito. Crédito restante: $" + credito);
             imprimirFichados();
         } else {
             System.out.println("Número de jugador a rectificar inválido.");
         }
     }
-    
-    
-    static int contarJugadoresFichadosEnPosicion(String posicion) {
+
+
+    private int contarJugadoresFichadosEnPosicion(String posicion) {
         int contador = 0;
         for (String pos : posicionesFichadas) {
             if (pos.equalsIgnoreCase(posicion)) {
@@ -216,7 +222,7 @@ public class SeleccionNBA_v14 {
         return contador;
     }
 
-    static void agregarNuevoJugador(Scanner leer) {
+    private void agregarNuevoJugador(Scanner leer) {
         System.out.println();
         System.out.println("Ingrese el nombre del nuevo jugador:");
         String nuevoNombre = leer.nextLine();
@@ -230,32 +236,31 @@ public class SeleccionNBA_v14 {
         double nuevoSalario = leer.nextDouble();
         leer.nextLine();
 
-        // Llamamos a la función add() para agregar el nuevo jugador y guardar los datos
         add(nuevoNombre, nuevaPosicion, nuevoSalario);
 
         System.out.println("Jugador agregado con éxito.");
         imprimirFichables();
     }
 
-    static void eliminarJugador(int indice) {
+    private void eliminarJugador(int indice) {
         posiciones.remove(indice);
         nombres.remove(indice);
         salarios.remove(indice);
     }
 
-    static void add(String nombre, String posicion, double salario) {
+    private void add(String nombre, String posicion, double salario) {
         nombres.add(nombre);
         posiciones.add(posicion);
         salarios.add(salario);
         guardarDatos();
     }
 
-    static void mostrarJugadoresPorPosicion(Scanner leer) {
+    private void mostrarJugadoresPorPosicion(Scanner leer) {
         System.out.println();
         System.out.println("Ingrese la posición para mostrar jugadores: base, escolta, alero, ala pivot o pivot");
         String posicionSeleccionada = leer.nextLine();
         System.out.println();
-        
+
         System.out.println("JUGADORES DISPONIBLES EN POSICIÓN " + posicionSeleccionada + ":");
         boolean jugadoresEncontrados = false;
         for (int i = 0; i < posiciones.size(); i++) {
@@ -264,22 +269,16 @@ public class SeleccionNBA_v14 {
                 System.out.println((i + 1) + ". " + posiciones.get(i) + " " + nombres.get(i) + " " + salarios.get(i));
             }
         }
-    
+
         if (!jugadoresEncontrados) {
             System.out.println("No hay jugadores disponibles en la posición " + posicionSeleccionada + ".");
             return;
         }
-    
-        /*System.out.println("Introduce el número del jugador a fichar: ");
-        int nleido = leer.nextInt();
-        leer.nextLine();
-        fichar(nleido -1);*/
-
-
     }
-    static void cargarDatos() {
+
+    private void cargarDatos() {
         try {
-            FileInputStream fileIn = new FileInputStream("datosNBAV2.obj");
+            FileInputStream fileIn = new FileInputStream("datosNBAV3.obj");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             salarios = (ArrayList<Double>) in.readObject();
             nombres = (ArrayList<String>) in.readObject();
@@ -300,9 +299,9 @@ public class SeleccionNBA_v14 {
         }
     }
 
-    static void guardarDatos() {
+    private void guardarDatos() {
         try {
-            FileOutputStream fileOut = new FileOutputStream("datosNBAV2.obj");
+            FileOutputStream fileOut = new FileOutputStream("datosNBAV3.obj");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(salarios);
             out.writeObject(nombres);
@@ -318,5 +317,5 @@ public class SeleccionNBA_v14 {
             i.printStackTrace();
         }
     }
-
 }
+
