@@ -1,17 +1,48 @@
 package org.example;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        Equipo equipoNBA = CrearArchivo.cargarDatos("datosNBAV3.obj");
+        if (equipoNBA == null) {
+            equipoNBA = new Equipo();
+        }
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        Scanner leer = new Scanner(System.in);
+        boolean flag = true;
+
+        while (flag) {
+            System.out.println("¿Qué desea realizar?");
+            System.out.println("1-. Mostrar lista jugadores");
+            System.out.println("2-. Fichar un jugador");
+            System.out.println("3-. Agregar nuevo jugador");
+            System.out.println("4-. Mostrar jugadores fichados");
+            System.out.println("5-. Rectificar fichaje");
+            System.out.println("S-. Salir");
+
+            String leido = leer.nextLine();
+            switch (leido) {
+                case "1":
+                    equipoNBA.imprimirJugadoresDisponibles(); // Corrección: llamando al método correcto
+                    break;
+                case "2":
+                    equipoNBA.ficharJugador(leer);
+                    break;
+                case "3":
+                    equipoNBA.agregarNuevoJugador(leer);
+                    break;
+                case "4":
+                    equipoNBA.imprimirJugadoresFichados(); // Corrección: llamando al método correcto
+                    break;
+                case "5":
+                    equipoNBA.rectificarFichaje(leer);
+                    break;
+                case "S":
+                    CrearArchivo.guardarDatos(equipoNBA, "datosNBAV3.obj"); // Corrección: usando el nombre correcto del archivo
+                    flag = false;
+                    break;
+            }
         }
     }
 }
