@@ -90,6 +90,7 @@ public class MainV2{
                 System.out.println((i + 1) + ". " + jugador);
             }
         }
+        System.out.println("Salario total: $" + calcularTotal(jugadores));
         System.out.println("Créditos disponibles: $" + credito);
 
         System.out.println();
