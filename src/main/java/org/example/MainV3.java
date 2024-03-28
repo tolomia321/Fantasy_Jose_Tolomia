@@ -3,17 +3,23 @@ package org.example;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class MainV2{
-    static double credito = 200;
+public class MainV3{
+    static double credito;
 
     public static void main(String[] args) {
-        ArrayList<Jugador> jugadores = CrearArchivo.cargarDatos("datosNBAV3.1.obj");
-        if (jugadores == null) {
+        ArrayList<Object> datosCargados = CrearArchivo.cargarDatos("datosNBAV3.1.obj");
+        ArrayList<Jugador> jugadores;
+
+        if (datosCargados != null && !datosCargados.isEmpty()) {
+            jugadores = (ArrayList<Jugador>) datosCargados.get(0);
+            credito = (double) datosCargados.get(1);
+        } else {
             jugadores = new ArrayList<>();
+            credito = 200;
         }
 
         Scanner scanner = new Scanner(System.in);
-
+        credito=cargarCredito();
         rellenarDatos(jugadores);
         boolean flag = true;
         while (flag) {
@@ -48,9 +54,14 @@ public class MainV2{
                     break;
             }
         }
-        CrearArchivo.guardarDatos(jugadores, "datosNBAV3.1.obj");
+        CrearArchivo.guardarDatos(jugadores, credito, "datosNBAV3.1.obj");
     }
-
+    private static double cargarCredito(){
+        if (credito == 0){
+            return credito = 200;
+        }
+        return credito;
+    }
     private static void rellenarDatos(ArrayList<Jugador> jugadores) {
         if(jugadores.isEmpty()) {
             add(jugadores, "Kyrie Irving", "Base", 33);
