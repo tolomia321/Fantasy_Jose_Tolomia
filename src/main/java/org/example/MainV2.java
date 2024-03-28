@@ -31,7 +31,7 @@ public class MainV2{
                     imprimirJugadoresDisponibles(jugadores);
                     break;
                 case "2":
-                    ficharJugador(jugadores, scanner); // Coloca el crédito disponible aquí
+                    ficharJugador(jugadores, scanner);
                     break;
                 case "3":
                     agregarNuevoJugador(jugadores, scanner);
@@ -52,31 +52,34 @@ public class MainV2{
     }
 
     private static void rellenarDatos(ArrayList<Jugador> jugadores) {
-        add(jugadores, "Kyrie Irving", "Base", 33);
-        add(jugadores, "Chris Paul", "Base", 28);
-        add(jugadores, "Russell Westbrook", "Base", 34);
-        add(jugadores, "Luka Doncic", "Base", 28);
+        if(jugadores.isEmpty()) {
+            add(jugadores, "Kyrie Irving", "Base", 33);
+            add(jugadores, "Chris Paul", "Base", 28);
+            add(jugadores, "Russell Westbrook", "Base", 34);
+            add(jugadores, "Luka Doncic", "Base", 28);
 
-        add(jugadores, "Devin Booker", "Escolta", 29);
-        add(jugadores, "Klay Thompson", "Escolta", 31);
-        add(jugadores, "Donovan Mitchell", "Escolta", 32);
-        add(jugadores, "Jaylen Brown", "Escolta", 28);
+            add(jugadores, "Devin Booker", "Escolta", 29);
+            add(jugadores, "Klay Thompson", "Escolta", 31);
+            add(jugadores, "Donovan Mitchell", "Escolta", 32);
+            add(jugadores, "Jaylen Brown", "Escolta", 28);
 
-        add(jugadores, "Kawhi Leonard", "Alero", 38);
-        add(jugadores, "Paul George", "Alero", 35);
-        add(jugadores, "Khris Middleton", "Alero", 33);
-        add(jugadores, "Jayson Tatum", "Alero", 34);
+            add(jugadores, "Kawhi Leonard", "Alero", 38);
+            add(jugadores, "Paul George", "Alero", 35);
+            add(jugadores, "Khris Middleton", "Alero", 33);
+            add(jugadores, "Jayson Tatum", "Alero", 34);
 
-        add(jugadores, "Giannis Antetokounmpo", "Ala Pivot", 40);
-        add(jugadores, "Anthony Davis", "Ala Pivot", 37);
-        add(jugadores, "Julius Randle", "Ala Pivot", 32);
-        add(jugadores, "John Collins", "Ala Pivot", 28);
+            add(jugadores, "Giannis Antetokounmpo", "Ala Pivot", 40);
+            add(jugadores, "Anthony Davis", "Ala Pivot", 37);
+            add(jugadores, "Julius Randle", "Ala Pivot", 32);
+            add(jugadores, "John Collins", "Ala Pivot", 28);
 
-        add(jugadores, "Joel Embiid", "Pivot", 37);
-        add(jugadores, "Nikola Vucevic", "Pivot", 28);
-        add(jugadores, "Rudy Gobert", "Pivot", 34);
-        add(jugadores, "Clint Capela", "Pivot", 26);
+            add(jugadores, "Joel Embiid", "Pivot", 37);
+            add(jugadores, "Nikola Vucevic", "Pivot", 28);
+            add(jugadores, "Rudy Gobert", "Pivot", 34);
+            add(jugadores, "Clint Capela", "Pivot", 26);
+        }
     }
+
 
     private static void add(ArrayList<Jugador> jugadores, String nombre, String posicion, double salario) {
         jugadores.add(new Jugador(nombre, posicion, salario));
@@ -137,13 +140,7 @@ public class MainV2{
     }
 
     private static double Creditos(double creditos, Double salario) {
-        if(salario == null){
-
-            return credito;
-        }
-        else {
-            return credito = creditos - salario;
-        }
+        return credito = creditos - salario;
     }
 
 
@@ -163,17 +160,20 @@ public class MainV2{
     }
 
     private static void imprimirJugadoresFichados(ArrayList<Jugador> jugadores) {
+        System.out.println();
         System.out.println("JUGADORES FICHADOS:");
         for (int i = 0; i < jugadores.size(); i++) {
             Jugador jugador = jugadores.get(i);
             if (jugador.isFichado()) {
                 System.out.println((i + 1) + ". " + jugador);
+                System.out.println();
             }
         }
     }
 
 
     private static void rectificarFichaje(ArrayList<Jugador> jugadores, Scanner scanner) {
+        System.out.println();
         System.out.println("Ingrese el número del jugador que desea rectificar su fichaje:");
         int numeroJugador = scanner.nextInt();
         scanner.nextLine();
@@ -189,9 +189,10 @@ public class MainV2{
             System.out.println("El jugador no está fichado.");
             return;
         }
-
+        Creditos(credito,-(jugadorRectificar.getSalario()));
         jugadorRectificar.setFichado(false);
-
+        System.out.println();
         System.out.println("Fichaje de " + jugadorRectificar.getNombre() + " rectificado.");
+        System.out.println();
     }
 }
